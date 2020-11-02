@@ -3,7 +3,7 @@
         stages {
             stage('Build Application') {
                 steps {
-                    sh 'mvn -f Pplflw_backend_service/pom.xml clean package'
+                    sh 'mvn -f Pplflw_backend/pom.xml clean package'
                 }
                 post {
                     success {
@@ -15,7 +15,7 @@
      
             stage('Create  Docker Image'){
                 steps {
-                    sh "docker build ./Pplflw_backend_service -t pplflw_backend_service:${env.BUILD_ID}"
+                    sh "docker build ./Pplflw_backend -t Pplflw_backend:${env.BUILD_ID}"
                 }
             }
      
