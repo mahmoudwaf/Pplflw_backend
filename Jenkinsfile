@@ -3,7 +3,7 @@
         stages {
             stage('Build Application') {
                 steps {
-                    sh 'mvn -f Pplflw_backend/pom.xml clean package'
+                    sh 'mvn -f pom.xml clean package'
                 }
                 post {
                     success {
