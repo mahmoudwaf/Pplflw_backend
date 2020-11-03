@@ -8,6 +8,7 @@ public class Employe {
 	private Date birthDate;
 	private String dept;
 	private double salary;
+	private int statusCode;
 	public int getEmpId() {
 		return empId;
 	}
@@ -37,6 +38,12 @@ public class Employe {
 	}
 	public void setSalary(double salary) {
 		this.salary = salary;
+	}
+	public int getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
 	}
 	
 	
