@@ -15,7 +15,7 @@
      
             stage('Create  Docker Image'){
                 steps {
-                    sh "docker build ./pplflw_backend -t pplflw_backend:${env.BUILD_ID}"
+                    sh "docker build . -t ${env.BUILD_ID}"
                 }
             }
      
