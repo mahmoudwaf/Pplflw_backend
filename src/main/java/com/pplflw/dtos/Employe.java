@@ -1,4 +1,4 @@
-package dtos;
+package com.pplflw.dtos;
 
 import java.sql.Date;
 
