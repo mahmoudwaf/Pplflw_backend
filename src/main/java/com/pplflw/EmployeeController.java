@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pplflw.config.EmployeeEventsEnum;
-import com.pplflw.config.EmployeeStateMachineConfig;
 import com.pplflw.config.EmployeeStatusEnum;
 import com.pplflw.config.StateMachineEventListener;
 import com.pplflw.dtos.Employe;
