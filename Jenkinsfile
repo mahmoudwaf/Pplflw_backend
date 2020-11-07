@@ -15,7 +15,7 @@
      
             stage('Create  Docker Image'){
                 steps {
-                    ssh -t  "sudo docker build  . -t pplflw_backend_service:${env.BUILD_ID} "
+                    sh "docker build  . -t pplflw_backend_service:${env.BUILD_ID} "
                 }
             }
      
