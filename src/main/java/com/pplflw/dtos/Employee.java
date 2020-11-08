@@ -2,12 +2,12 @@ package com.pplflw.dtos;
 
 import java.sql.Date;
 
-public class Employe {
+public class Employee {
 	private int empId;
 	private String fullName;
 	private Date birthDate;
-	private String dept;
-	private double salary;
+	private String country;
+	private String jobTitle;
 	private int statusCode;
 	public int getEmpId() {
 		return empId;
@@ -27,17 +27,17 @@ public class Employe {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	public String getDept() {
-		return dept;
+	public String getCountry() {
+		return country;
 	}
-	public void setDept(String dept) {
-		this.dept = dept;
+	public void setCountry(String country) {
+		this.country = country;
 	}
-	public double getSalary() {
-		return salary;
+	public String getJobTitle() {
+		return jobTitle;
 	}
-	public void setSalary(double salary) {
-		this.salary = salary;
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
 	}
 	public int getStatusCode() {
 		return statusCode;
@@ -45,6 +45,6 @@ public class Employe {
 	public void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
 	}
-	
+		
 	
 }
