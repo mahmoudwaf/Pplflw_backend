@@ -1,0 +1,36 @@
+version: '3'
+services:
+  mysql-db:
+    container_name: mysql-db
+    env_file:
+      - .env
+    image: "mysql/mysql-server:5.7" 
+    ports:
+      - "3307:3306"
+    networks:
+      springboot-mysql-network:
+        aliases:
+        - mysql-db
+    environment:
+      - MYSQL_ONETIME_PASSWORD=true
+    volumes:
+        - ./mysql-data:/var/lib/mysql57:rw
+        - ./mysql-init:/docker-entrypoint-initdb.d/:ro
+        
+  springboot-ppflow-app:
+    container_name: springboot-ppflow-app
+    image: springboot-ppflow-app:latest
+    build: 
+      context: ./springboot-mysql-docker-compose
+      dockerfile: Dockerfile
+    working_dir: /springboot-mysql-docker-compose
+    restart: on-failure
+    ports:
+      - "9090:9090"
+    depends_on: 
+      - mysql-db  
+    environment:      
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db/${MYSQL_DB}?useSSL=false&allowPublicKeyRetrieval=true
+    command: mvn clean spring-boot:run

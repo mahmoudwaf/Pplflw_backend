@@ -21,6 +21,7 @@ import com.pplflw.config.EmployeeStatusEnum;
 import com.pplflw.config.StateMachineEventListener;
 import com.pplflw.dtos.Employee;
 import com.pplflw.dtos.EmployeeInput;
+import com.pplflw.dtos.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
@@ -30,18 +31,23 @@ public class EmployeeController {
 	private StateMachine<EmployeeStatusEnum, EmployeeEventsEnum> stateMachine;
 	List<Employee> empList = new ArrayList<Employee>();
 	int empIdsCounter = 0;
+	
+	 @Autowired
+     EmployeeService empService;
 	 
 	@RequestMapping(value = "/addEmployee" ,  method = RequestMethod.POST,consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public String addEmployee(@RequestBody EmployeeInput employeeInput) {
 		System.out.println("addEmployee() called...");
 		Employee employee = EmpUtil.getEmployeeObject(employeeInput);
 		employee.setStatusCode(Integer.valueOf(EmployeeStatusEnum.ADDED.getCode()));
-		empIdsCounter++;
-		employee.setEmpId(empIdsCounter);
-		empList.add(employee);
+		//empIdsCounter++;
+		//employee.setEmpId(empIdsCounter);
+		 // new EmployeeService();
+		employee = empService.saveEmployee(employee);
+		//empList.add(employee);
 		stateMachine.start();
 		stateMachine.sendEvent(EmployeeEventsEnum.ADDED);
-		return "Employee saved successfully with employee id " +empIdsCounter ;
+		return "Employee saved successfully with employee id " +employee.getEmpId() ;
 	}
 	
 	 
@@ -54,7 +60,15 @@ public class EmployeeController {
 		if(!isValidStatusCode) {
 			return "Invalid Status Code";
 		}
-		boolean empExist = false;
+		String msg = "";
+		try {
+			empService.updateEmployeeStatusCode(Integer.valueOf(empId), Integer.valueOf(statusCode));
+			msg = "Employee status updated successfully";
+		}catch(Exception e) {
+			e.printStackTrace();
+			msg = e.getMessage();
+		}
+		/*boolean empExist = false;
 		for(Employee emp : empList) {
 			if(emp.getEmpId() == Integer.valueOf(empId)) {
 				emp.setStatusCode(Integer.valueOf(statusCode));
@@ -70,6 +84,7 @@ public class EmployeeController {
 		}else {
 			msg = "Employee not exist,please add it";
 		}
+		*/
 		return msg;
 	}
 	

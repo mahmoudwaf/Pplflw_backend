@@ -2,7 +2,16 @@ package com.pplflw.dtos;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "employee")
 public class Employee {
+	@Id
+	@GeneratedValue
 	private int empId;
 	private String fullName;
 	private Date birthDate;
