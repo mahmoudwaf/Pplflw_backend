@@ -1,40 +1,27 @@
 version: '3'
+
 services:
-  mysql-db:
-    container_name: mysql-db
-    image: "mysql/mysql-server:5.7" 
-    ports:
-      - "3306:3306"
+
+  ppflow-mysql:
+    image: mysql:8.0
     environment:
-      - MYSQL_ONETIME_PASSWORD=true
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=ppflow
       - MYSQL_USER=root
       - MYSQL_PASSWORD=admin
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DB=ppflow
-    networks:
-      springboot-mysql-network:
-        aliases:
-        - mysql-db
-    environment:
-      - MYSQL_ONETIME_PASSWORD=true
-    volumes:
-        - ./mysql-data:/var/lib/mysql57:rw
-        - ./mysql-init:/docker-entrypoint-initdb.d/:ro
-        
-  springboot-ppflow-app:
-    container_name: springboot-ppflow-app
-    image: springboot-ppflow-app:latest
-    build: 
-      context: /ppflow
-      dockerfile: Dockerfile
-    working_dir: /ppflow
-    restart: on-failure
     ports:
-      - "9090:9090"
-    depends_on: 
-      - mysql-db  
-    environment:      
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: admin
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db/${MYSQL_DB}?useSSL=false&allowPublicKeyRetrieval=true
-    command: mvn clean spring-boot:run
+      - 3306:3306
+
+  myapp-main:
+    image: ppflow_image
+    restart: on-failure
+    depends_on:
+      - ppflow-mysql
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=myapp-mysql
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=admin
+      - DATABASE_NAME=ppflow
+      - DATABASE_PORT=3306
