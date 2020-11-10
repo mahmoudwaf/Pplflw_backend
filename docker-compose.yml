@@ -25,9 +25,9 @@ services:
     container_name: springboot-ppflow-app
     image: springboot-ppflow-app:latest
     build: 
-      context: ./springboot-mysql-docker-compose
+      context: /ppflow
       dockerfile: Dockerfile
-    working_dir: /springboot-mysql-docker-compose
+    working_dir: /ppflow
     restart: on-failure
     ports:
       - "9090:9090"
