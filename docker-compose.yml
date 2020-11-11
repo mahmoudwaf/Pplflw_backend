@@ -1,27 +1,29 @@
 version: '3'
-
 services:
-
   ppflow-mysql:
-    image: mysql:8.0
+    container_name: ppflow-mysql
+    image: mysql:8
+    ports:
+      - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
-      - MYSQL_DATABASE=ppflow
+      - MYSQL_ONETIME_PASSWORD=true
       - MYSQL_USER=root
       - MYSQL_PASSWORD=admin
-    ports:
-      - 3306:3306
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DB=ppflow
+    volumes:
+      - db-data:/var/lib/mysql
 
-  myapp-main:
-    image: ppflow_image
+  ppflow-app:
+    container_name: ppflow-app
+    image: ppflow-app:latest
+    build:
+        context: .
+        dockerfile: Dockerfile
     restart: on-failure
+    ports:
+      - "9090:9090"
     depends_on:
       - ppflow-mysql
-    ports:
-      - 8080:8080
-    environment:
-      - DATABASE_HOST=myapp-mysql
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=admin
-      - DATABASE_NAME=ppflow
-      - DATABASE_PORT=3306
+volumes:
+  db-data:
