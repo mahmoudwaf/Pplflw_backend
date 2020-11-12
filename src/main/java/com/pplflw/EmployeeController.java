@@ -51,7 +51,7 @@ public class EmployeeController {
 		System.out.println("updateEmployeeStatus called empId = "+empId + ",statusCode = "+statusCode);
 		boolean  isValidStatusCode = EmpUtil.isValidStatusCode(statusCode);
 		if(!isValidStatusCode) {
-			return "Invalid Status Code";
+			return "Invalid Status Code 2";
 		}
 		String msg = "";
 		try {
