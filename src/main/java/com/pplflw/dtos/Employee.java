@@ -2,6 +2,7 @@ package com.pplflw.dtos;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,11 +13,22 @@ import javax.persistence.Table;
 public class Employee {
 	@Id
 	@GeneratedValue
+	@Column(name = "empId")
 	private int empId;
+	
+	@Column(name = "fullName")
 	private String fullName;
+	
+	@Column(name = "birthDate")
 	private Date birthDate;
+	
+	@Column(name = "country")
 	private String country;
+	
+	@Column(name = "jobTitle")
 	private String jobTitle;
+	
+	@Column(name = "statusCode")
 	private int statusCode;
 	public int getEmpId() {
 		return empId;
