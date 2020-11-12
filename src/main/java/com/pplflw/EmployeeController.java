@@ -96,7 +96,7 @@ public class EmployeeController {
 	
 	@GetMapping(value = "/getVersion")
 	public String getVersion() {
-		return "1.0";
+		return "2.0";
 	}
 	 
 	
