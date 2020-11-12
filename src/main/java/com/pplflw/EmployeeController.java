@@ -1,6 +1,5 @@
 package com.pplflw;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,6 @@ public class EmployeeController {
 	
 	@Autowired
 	private StateMachine<EmployeeStatusEnum, EmployeeEventsEnum> stateMachine;
-	List<Employee> empList = new ArrayList<Employee>();
-	int empIdsCounter = 0;
 	
 	 @Autowired
      EmployeeService empService;
@@ -40,11 +37,7 @@ public class EmployeeController {
 		System.out.println("addEmployee() called...");
 		Employee employee = EmpUtil.getEmployeeObject(employeeInput);
 		employee.setStatusCode(Integer.valueOf(EmployeeStatusEnum.ADDED.getCode()));
-		//empIdsCounter++;
-		//employee.setEmpId(empIdsCounter);
-		 // new EmployeeService();
 		employee = empService.saveEmployee(employee);
-		//empList.add(employee);
 		stateMachine.start();
 		stateMachine.sendEvent(EmployeeEventsEnum.ADDED);
 		return "Employee saved successfully with employee id " +employee.getEmpId() ;
@@ -68,42 +61,21 @@ public class EmployeeController {
 			e.printStackTrace();
 			msg = e.getMessage();
 		}
-		/*boolean empExist = false;
-		for(Employee emp : empList) {
-			if(emp.getEmpId() == Integer.valueOf(empId)) {
-				emp.setStatusCode(Integer.valueOf(statusCode));
-				stateMachine.start();
-				stateMachine.sendEvent(EmployeeEventsEnum.get(statusCode));
-				empExist = true;
-				break;
-			}
-		}
-		String msg = "";
-		if(empExist) {
-			msg = "Employee status updated successfully";
-		}else {
-			msg = "Employee not exist,please add it";
-		}
-		*/
+		 
 		return msg;
 	}
 	
-	@RequestMapping(value = "/getEmployee/{empId}" , method = RequestMethod.GET)
+	@GetMapping(value = "/getEmployee/{empId}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getEmployee(@PathVariable("empId") String empId) {
-		System.out.println("getEmployee() called...");
+		System.out.println("getEmployee("+empId+") called...");
 		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		for(Employee emp : empList) {
-			if(emp.getEmpId() == Integer.valueOf(empId)) {
+		String json = null;
 				try {
-					  json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(emp);
-					  break;
+					 Employee emp = empService.getEmployee(Integer.valueOf(empId));
+					 json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(emp);
 				}catch(Exception e) {
 					e.printStackTrace();
 				} 
-			}
-		}
-		//System.out.println("getEmployee:"+json);
 		return json;
 	}
 	
@@ -113,6 +85,7 @@ public class EmployeeController {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = null;
 		try {
+			  List<Employee> empList = empService.getEmployeeList();
 			  json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(empList);
 			  System.out.println(json);
 		}catch(Exception e) {
@@ -121,15 +94,7 @@ public class EmployeeController {
 		return json;
 	}
 	
-	@GetMapping(value = "/deleteAll" )
-	public String deleteAll() {
-		System.out.println("deleteAll() called...");
-		for(Employee emp : empList) {
-				 empList.remove(emp);
-		}
-		
-		return "Employee List Re-Initialized...";
-	}
+	 
 	
 	 @Bean
 	    public StateMachineEventListener stateMachineEventListener() {
