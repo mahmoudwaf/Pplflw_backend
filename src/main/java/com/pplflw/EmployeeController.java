@@ -94,6 +94,10 @@ public class EmployeeController {
 		return json;
 	}
 	
+	@GetMapping(value = "/getVersion")
+	public String getVersion() {
+		return "1.0";
+	}
 	 
 	
 	 @Bean
